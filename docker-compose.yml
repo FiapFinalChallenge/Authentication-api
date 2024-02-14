@@ -1,0 +1,38 @@
+version: '3'
+services:
+  mysql-db:
+    image: mysql:8.0.0
+    environment:
+      MYSQL_DATABASE: 'ecommerce'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - "3306:3306"
+
+  eureka-server:
+    image: marcoscosta01/eureka-server:latest
+    ports:
+      - "8761:8761"
+
+  spring-cloud-config-server:
+    image: marcoscosta01/spring-cloud-service:latest
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka-server
+
+  authentication-service:
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql-db
+      - eureka-server
+      - spring-cloud-config-server
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/ecommerce?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_CLOUD_CONFIG_URI: http://spring-cloud-config-server:8888

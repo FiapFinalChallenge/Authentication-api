@@ -1,31 +1,22 @@
 package authentication.domain.service.impl;
 
-import authentication.application.dto.request.UserRequest;
-import authentication.application.mapper.UserMapper;
+import authentication.application.dto.request.SignUpRequest;
 import authentication.application.dto.response.UserResponse;
+import authentication.application.mapper.UserMapper;
 import authentication.domain.repository.IUserRepository;
 import authentication.domain.service.contract.IUserService;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
 
+    private static final String USER_NOT_FOUND = "User not found";
     private final IUserRepository repository;
     private final UserMapper mapper;
-    private static final String USER_NOT_FOUND = "User not found";
-
-    @Override
-    public List<UserResponse> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(mapper::convertToUserResponse)
-                .toList();
-    }
 
     @Override
     public UserResponse getById(Long id) {
@@ -34,14 +25,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse create(UserRequest request) {
-        return mapper.convertToUserResponse(repository.save(mapper.convertToUser(request)));
-    }
-
-    @Override
-    public UserResponse update(Long id, UserRequest request) {
-        getById(id);
-        return mapper.convertToUserResponse(repository.save(mapper.convertToUser(request)));
+    public void create(SignUpRequest signUpRequest) {
+        var encodedPassword = new BCryptPasswordEncoder().encode(signUpRequest.password());
+        var user = mapper.convertToUser(signUpRequest);
+        user.setPassword(encodedPassword);
+        repository.save(user);
     }
 
     @Override

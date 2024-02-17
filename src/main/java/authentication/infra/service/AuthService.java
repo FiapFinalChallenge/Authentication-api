@@ -31,11 +31,10 @@ public class AuthService implements IAuthService {
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.username(), signInRequest.password()));
 
-        if (authentication.isAuthenticated()) {
-            return new JwtResponse(jwtService.generateToken(signInRequest.username()));
-
-        } else {
+        if (!authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("invalid user..!!");
         }
+
+        return new JwtResponse(jwtService.generateToken(signInRequest.username()));
     }
 }

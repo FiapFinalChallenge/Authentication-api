@@ -9,5 +9,5 @@ public interface IUserController {
     UserResponse getById(@PathVariable Long id);
 
     @DeleteMapping("{id}")
-    void delete(@PathVariable Long id);
+    void deleteById(@PathVariable Long id);
 }

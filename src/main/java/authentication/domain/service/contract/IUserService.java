@@ -9,5 +9,5 @@ public interface IUserService {
 
     void create(SignUpRequest signUpRequest);
 
-    void delete(Long id);
+    void deleteById(Long id);
 }

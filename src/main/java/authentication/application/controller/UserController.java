@@ -20,7 +20,7 @@ public class UserController implements IUserController {
     }
 
     @Override
-    public void delete(Long id) {
-        service.delete(id);
+    public void deleteById(Long id) {
+        service.deleteById(id);
     }
 }

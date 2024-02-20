@@ -5,7 +5,7 @@ import authentication.application.dto.response.UserResponse;
 import authentication.application.mapper.UserMapper;
 import authentication.domain.repository.IUserRepository;
 import authentication.domain.service.contract.IUserService;
-import jakarta.ws.rs.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResponse getById(Long id) {
         return mapper.convertToUserResponse(repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND)));
     }
 
     @Override

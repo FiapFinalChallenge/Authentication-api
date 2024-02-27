@@ -3,6 +3,7 @@ package authentication.domain.service.impl;
 import authentication.application.dto.request.SignUpRequest;
 import authentication.application.dto.response.UserResponse;
 import authentication.application.mapper.UserMapper;
+import authentication.domain.model.User;
 import authentication.domain.repository.IUserRepository;
 import authentication.domain.service.contract.IUserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,11 +26,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void create(SignUpRequest signUpRequest) {
+    public User create(SignUpRequest signUpRequest) {
         var encodedPassword = new BCryptPasswordEncoder().encode(signUpRequest.password());
         var user = mapper.convertToUser(signUpRequest);
         user.setPassword(encodedPassword);
-        repository.save(user);
+        return repository.save(user);
     }
 
     @Override

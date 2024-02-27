@@ -16,5 +16,5 @@ public interface IJwtService {
 
     Boolean validateToken(String token, UserDetails userDetails);
 
-    String generateToken(String username);
+    String generateToken(UserDetails userDetails);
 }

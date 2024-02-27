@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.security.Key;
 import java.util.*;
@@ -42,9 +43,13 @@ public class JwtService implements IJwtService {
     }
 
     @Override
-    public String generateToken(String username){
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        claims.put("roles", userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
+
+        return createToken(claims, userDetails.getUsername());
     }
 
     private Claims extractAllClaims(String token) {

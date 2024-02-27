@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({AuthenticationException.class, HttpClientErrorException.class})
     public ErrorMessage handleAuthenticationException(AuthenticationException ex) {
-        return new ErrorMessage("token_invalido", "Unknown or expired token.");
+        return new ErrorMessage("token_invalid", "Unknown or expired token.");
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

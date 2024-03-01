@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql-db:
-    image: mysql:8.0.0
+    image: mysql:8.0.36
     environment:
       MYSQL_DATABASE: 'ecommerce'
       MYSQL_USER: 'user'
@@ -22,7 +22,7 @@ services:
   spring-cloud-config-server:
     image: marcoscosta01/spring-cloud-service:latest
     ports:
-      - "8888:8888"
+      - "8080:8080"
     depends_on:
       - eureka-server
     networks:

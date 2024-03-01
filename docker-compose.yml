@@ -27,6 +27,7 @@ services:
       - eureka-server
     networks:
       - ecommerce-network
+    command: ["./bash/wait-for-it.sh", "eureka-server", "8761", "Eureka Server"]
 
   authentication-service:
     build: .
@@ -38,6 +39,7 @@ services:
       - spring-cloud-config-server
     networks:
       - ecommerce-network
+    command: ["./bash/wait-for-it.sh", "spring-cloud-config-server", "8080", "Gateway"]
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/ecommerce?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
